@@ -1,0 +1,90 @@
+{% extends 'main.html' %}
+
+{% block title %}
+    Profile
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-12 col-lg-8">
+                {% if not tracks %}
+                <h4 class="d-flex justify-content-center">No uploads as yet...</h4>
+                {% else %}
+                    {% for track in tracks %}
+                    <!-- Song Card -->
+                    <div class="card mb-3">
+                        <div class="row g-0">
+                            <!-- Cover Art -->
+                            <div class="col-md-4 d-flex justify-content-between align-items-center">
+                                <a href="{% url 'track' slug=track.slug %}" class="text-decoration-none">
+                                    <img src="{{ track.cover_art.url }}" class="cover-art card-img-top rounded-0" alt="">
+                                </a>
+                            </div>
+                            <div class="col-md-8 d-flex flex-column">
+                                <div class="card-body d-flex flex-column">
+                                    <!-- Title & Player -->
+                                    <div class="flex-column align-items-center">
+                                        <div class="ms-3">
+                                            <a class="text-dark text-decoration-none" href="{% url 'track' slug=track.slug %}"><h6>{{ track.artist_name }} - {{ track.track_title }}</h6></a>
+                                        </div>
+                                        <div class="">
+                                            <!-- Audio Player -->
+                                            <audio src="{{ track.track.url }}" id="{{track.pk}}" class="audio" controls></audio>
+                                        </div>
+                                    </div>
+                                    <!-- Track Info and Buttons -->
+                                    <div class="mt-auto">
+                                        <hr class="m-0">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="d-flex align-items-center my-2">
+                                                <ul class="d-flex list-inline m-0">
+                                                    <li class="list-inline-items align-items-center me-1">
+                                                        <form action="{% url 'like'%}" method="POST" class="like-form" id="{{track.id}}">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="track_id" value="{{track.id}}">
+                                                            {% if user not in track.likes.all %}
+                                                            <button class="btn like-button{{track.id}}" id="" value="{{track.id}}">
+                                                                <i class="bi bi-heart"></i>
+                                                            </button>
+                                                            {% else %}
+                                                            <button class="btn like-button{{track.id}}" id="" value="{{track.id}}">
+                                                                <i class="bi bi-heart-fill"></i>
+                                                            </button>
+                                                            {% endif %} 
+                                                        </form>
+                                                    </li>
+                                                    <li class="list-inline-items me-1">
+                                                        <a href="{% url 'track' slug=track.slug %}">
+                                                            <button class="btn">
+                                                                <i class="bi bi-chat-left"></i>
+                                                            </button>
+                                                        </a>
+                                                    </li>
+                                                    <li class="list-inline-items ml-4 me-1">
+                                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">
+                                                            <i class="bi bi-share"></i>
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="d-flex align-items-center me-3">
+                                                <span class="like-count{{track.id}}" id="like-count">{{track.like_count}}</span>
+                                            </div>
+                                        </div>
+                                        <hr class="m-0">
+                                        <div class="d-flex justify-content-between">
+                                            <!-- <small class="text-muted">21267 Plays</small> -->
+                                            <p class="card-text"><small class="text-muted">Uploaded {{track.created|date:"M d, Y"}}</small></p>
+                                        </div> 
+                                    </div>       
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% endif %}    
+            </div>
+        </div>
+    </div>
+{% endblock content %}

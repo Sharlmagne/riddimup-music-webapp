@@ -1,0 +1,53 @@
+{% extends 'main.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Upload
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8 col-lg-5">
+            <div class="card">
+                <div class="card-header d-flex justify-content-center">
+                  <h4>Upload New Track</h4>
+                </div>
+                <div class="card-body">
+                    <form class="m-3" action="" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="Track Title" class="form-label">Track Title</label>
+                            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Enter track title" name="track_title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label">Artist Name</label>
+                            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Enter artist name" name="artist_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="formFile" class="form-label">Upload New Track</label>
+                            <input class="form-control" type="file" id="formFile" name="track" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="formFile" class="form-label">Upload Cover Art</label>
+                            <input class="form-control" type="file" id="formFile" name="cover_art" required>
+                        </div>
+                        {% if form.errors %}
+                          {% for field in form %}
+                            {% for error in field.errors %} 
+                              <div class="alert alert-danger">
+                                  <strong>{{ error|escape }}</strong>
+                              </div>
+                            {% endfor %}
+                          {% endfor %}
+                        {% endif %}
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary">Upload</button>
+                        </div>
+                    </form>
+                </div>
+            </div>  
+        </div>
+    </div>
+</div>
+{% endblock content %}

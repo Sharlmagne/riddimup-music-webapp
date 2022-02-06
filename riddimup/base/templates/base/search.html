@@ -1,0 +1,45 @@
+{% extends 'main.html' %}
+
+{% block title %}
+    Charts
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-8">
+                {% if searched %}
+                    <div class="d-flex justify-content-center mt-3">
+                        <h4>You searched for {{ searched }}...</h4>
+                    </div>
+                    <br>
+                    <div class="card d-flex justify-content-center">
+                        {% if request.user.is_authenticated %}
+                        <div class="card-body d-flex flex-column">
+                            {% for track in tracks %}
+                                <a class="text-dark text-decoration-none my-2 d-flex justify-content-center" href="{% url 'track' slug=track.slug %}">
+                                    <strong class="d-block">{{ track }}</strong>
+                                </a>
+                                <hr>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <div class="card-body d-flex flex-column">
+                            {% for track in tracks %}
+                                <a class="text-dark text-decoration-none my-2 d-flex justify-content-center" href="{% url 'login' %}">
+                                    <strong class="d-block">{{ track }}</strong>
+                                </a>
+                                <hr>
+                            {% endfor %}
+                        </div>
+                        {% endif %} 
+                    </div>
+                {% else %}
+                <div class="d-flex justify-content-center mt-3">
+                    <h4>You forgot to search for a track...</h4>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}

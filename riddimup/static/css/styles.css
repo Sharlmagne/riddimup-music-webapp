@@ -1,0 +1,26 @@
+
+.card .card-header {
+    color: #d3d3d3 !important;
+    background-color: #343a40 !important;
+}
+
+.btn {
+    color: #000000 !important;
+    background-color: #14e56c !important;
+    border-color: black;
+}
+
+thead {
+    background-color: #14e56c !important;
+    color: #242424 !important;
+}
+
+audio {
+    display: flex;
+    width: 100%;
+    padding: 10px;
+    
+}
+audio::-webkit-media-controls-panel {
+    background-color: #14e56c;
+  }

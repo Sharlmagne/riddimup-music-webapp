@@ -1,0 +1,23 @@
+{% extends 'main.html' %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block content %}
+<div class="container col-md-10 col-lg-8 mt-5">
+    <div class="card d-flex flex-column align-items-center p-5">
+      <h2 class="">You have been logged out</h2>
+      <br>
+      <div class="content-section">
+          <div class="">
+            <small class="text-muted">
+              <a href="{% url 'login' %}" >
+                <button class="btn btn-primary">Log In Again?</button>
+              </a>
+            </small>
+          </div>
+      </div>
+    </div>
+</div>
+{% endblock content %}

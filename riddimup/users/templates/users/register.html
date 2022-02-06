@@ -1,0 +1,58 @@
+{% extends 'main.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center mt-5">
+      <div class="col-md-10 col-lg-6">
+          <div class="card">
+              <div class="card-header d-flex justify-content-center">
+                <h4>Register</h4>
+              </div>
+              <div class="card-body">
+                  <form class="m-3" action="" method="POST" enctype="multipart/form-data">
+                      {% csrf_token %}
+                      <div class="mb-3">
+                          <label for="Username" class="form-label">Username</label>
+                          <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Enter username" name="username" required>
+                      </div>
+                      <div class="mb-3">
+                        <label for="Email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Enter email" name="email" required>
+                      </div>
+                      <div class="mb-3">
+                          <label for="exampleFormControlInput1" class="form-label">Password</label>
+                          <input type="password" class="form-control" id="exampleFormControlInput1" placeholder="Enter password" name="password1" required>
+                      </div>
+                      <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Password Confirmation</label>
+                        <input type="password" class="form-control" id="exampleFormControlInput1" placeholder="Re-enter password" name="password2" required>
+                      </div>
+                        {% if form.errors %}
+                          {% for field in form %}
+                            {% for error in field.errors %} 
+                              <div class="alert alert-danger">
+                                  <strong>{{ error|escape }}</strong>
+                              </div>
+                            {% endfor %}
+                          {% endfor %}
+                        {% endif %}
+                      <div class="d-flex justify-content-center">
+                          <button type="submit" class="btn btn-primary">Register</button>
+                      </div>
+                  </form>
+              </div>
+              <div class="card-footer">
+                <small class="text-muted d-flex justify-content-center">
+                  Need An Account? <a href="{% url 'login' %}" class="ms-2"> Sign In</a>
+                </small>
+              </div>
+          </div>  
+      </div>
+  </div>
+</div>
+{% endblock content %}

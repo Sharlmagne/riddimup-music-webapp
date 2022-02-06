@@ -1,0 +1,22 @@
+<script>
+    $(document).on('click', '.like-form', function (e) {
+        e.preventDefault();
+        const id = $(this).attr('id')           
+        $.ajax({
+            type: 'POST',
+            url: '{% url "like" %}',
+            data: {
+                trackid: $(`.like-button${id}`).val(),
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function (json) {
+                $(`.like-count${id}`).text(json['result'])
+            },
+            error: function (xhr, errmsg, err) {
+
+            }
+        });
+    })
+    
+
+</script>

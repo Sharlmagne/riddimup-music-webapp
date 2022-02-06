@@ -1,0 +1,115 @@
+{% extends 'main.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block title %}
+    Track
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-12 col-lg-8 px-0">
+            <div class="card-body p-0">
+                <a href="{% url 'track' slug=track.slug %}" class="text-decoration-none">
+                    <img src="{{ track.cover_art.url }}" class="cover-art card-img-top rounded-0" alt="">
+                </a>
+            </div>
+        </div>
+        <div class="col-md-12 col-lg-8 ps-3 pe-2 mb-5 border d-flex flex-column">
+            <!-- Heading -->
+            <div class="my-2">
+                <img src="{{ track.author.profile.image.url }}" width="35" height="35" class="rounded-circle">
+                <span class="font-weight-bold mx-2">{{ track.author }}</span>
+            </div>
+            <hr class="m-0">
+            <!-- Title & Player -->
+            <div class="justify-content-between align-items-center my-2">
+                <div class="my-2">
+                    <a class="text-dark text-decoration-none" href="{% url 'track' slug=track.slug %}">
+                        <strong class="d-block">{{ track.track_title }}</strong>
+                    </a>
+                    <p class="m-0">By {{ track.artist_name }}</p>
+                </div>
+                <!-- Audio Player -->
+                <div>
+                    <audio src="{{ track.track.url }}" id="{{track.pk}}" class="audio" controls></audio>
+                </div>
+            </div>
+            <hr class="my-2">
+            
+            <!-- Like & Share -->
+            <div class="d-flex justify-content-between">
+                {% if request.user.is_authenticated %}
+                <div class="">
+                    <ul class="d-flex list-inline m-0">
+                        <li class="list-inline-items likes">
+                            <form action="{% url 'like' %}" method="POST" class="like-form" id="{{track.id}}">
+                                {% csrf_token %}
+                                <input type="hidden" name="track_id" value="{{track.id}}">
+                                {% if user not in track.likes.all %}
+                                <button class="btn like-button{{track.id}}" id="" value="{{track.id}}">
+                                    <i class="bi bi-heart"></i>
+                                </button>
+                                {% else %}
+                                <button class="btn like-button{{track.id}}" id="" value="{{track.id}}">
+                                    <i class="bi bi-heart-fill"></i>
+                                </button>
+                                {% endif %} 
+                            </form>
+                        </li>
+                        <li class="list-inline-items ms-1">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">
+                                <i class="bi bi-share"></i>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                {% endif %}
+                <div class="d-flex align-items-center me-3">
+                    <span class="like-count{{track.id}}" id="like-count">{{track.like_count}}</span>
+                </div>
+            </div>
+            <hr class="my-2">
+            
+            <!-- Comments -->
+            <div class="" style="overflow-y: auto; height: 70vh; ">
+                {% if not track.comments.all %}
+                    <p class="d-flex justify-content-center mt-2 text-muted">
+                        No comments as yet...
+                    </p>
+                {% else %}
+                    {% for comment in track.comments.all %}
+                    <div class="d-flex mt-2">
+                        <div class="d-flex align-items-start">
+                            <img src="{{ comment.author.profile.image.url }}" width="35" height="35" class="rounded-circle me-2">
+                            <div>
+                                <strong class="d-block">{{comment.author}}</strong>
+                                <small class="text-muted" style="font-size: 0.5rem">Uploaded {{comment.created|date:"M d, Y"}}</small>
+                            </div>
+                        </div>
+                        <span class="mx-2">{{comment.body}}</span>
+                    </div>
+                    {% endfor %}
+                {% endif %}    
+            </div>
+            <div class="mt-auto">      
+                <hr class="m-0">
+                <div class="mb-2">
+                    <span class="text-muted" style="font-size: x-small;">Uploaded {{track.created|date:"M d, Y"}}</span>
+                </div>
+                <div class="mb-2">
+                    <form class="input-group" action="{% url 'track' slug=track.slug %}" id="{{ track.pk }}" method="POST">
+                        {% csrf_token %}
+                        <input type="text" class="form-control border-0 px-0" name="body" placeholder="Add a comment...">
+                        <button class="btn input-group-append"><i class="bi bi-cursor"></i></button>
+                    </form>
+                    
+                </div> 
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Share Modal -->
+{% include 'share_modal.html' %}
+{% endblock content %}
